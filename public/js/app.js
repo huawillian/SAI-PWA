@@ -37,3 +37,7 @@ window.getItems = () => {
     resolve(result);
   });
 };
+
+window.addItem = (item) => {
+
+};
