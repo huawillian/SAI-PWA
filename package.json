@@ -1,0 +1,22 @@
+{
+  "name": "sai-pwa",
+  "version": "1.0.0",
+  "description": "Simple Actionable Items (SAI) as a Progressive Web App (PWA) using Vanilla JS/CSS",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -o"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huawillian/SAI-PWA.git"
+  },
+  "author": "Willian Hua",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huawillian/SAI-PWA/issues"
+  },
+  "homepage": "https://github.com/huawillian/SAI-PWA#readme",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}
