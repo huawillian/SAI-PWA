@@ -44,6 +44,8 @@ const renderTime = () => {
 
 window.deleteItem = () => {
   console.log('deleting item!');
+  window.removeItem(itemId);
+  window.location.href = '/';
 };
 
 window.startItem = () => {
@@ -79,9 +81,7 @@ window.addEventListener("load", () => {
   backEl = document.querySelector('.detail-back');
 
   if(itemId) {
-    window.getItems().then(items => {
-      let item = items.find(item => item.id = itemId);
-
+    window.getItem(itemId).then(item => {
       if(item) {
         console.log('Loading Item:', item);
         iconEl.innerText = item.icon;

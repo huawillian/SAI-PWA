@@ -33,7 +33,9 @@ window.createItem = event => {
 
   console.log("Creating Item", item);
 
-  window.addItem(item);
+  window.addItem(item).then(res => {
+      window.location.href = '/';
+  })
 };
 
 const selectIcon = icon => {

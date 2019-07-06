@@ -23,21 +23,3 @@ const promptAddToHomeScreen = () => {
     deferredPrompt.prompt();
   }
 };
-
-window.getItems = () => {
-  // TODO: Fetch items
-  return new Promise(resolve => {
-    let result = [new Item(), new Item(), new Item(), new Item()];
-
-    result[0].id = "1";
-    result[1].id = "2";
-    result[2].id = "3";
-    result[3].id = "4";
-
-    resolve(result);
-  });
-};
-
-window.addItem = (item) => {
-
-};
