@@ -25,6 +25,7 @@ self.addEventListener("install", event => {
         staticCache.map(url =>
           fetch(url)
             .then(res => {
+              // Clone response to allow cache html, no follow
               cache.put(url, new Response(res.body));
             })
             .catch(err => err)
@@ -43,25 +44,34 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {});
 
 self.addEventListener("fetch", event => {
-  let request = new Request(event.request.url, {
-    method: "GET",
-    headers: event.request.headers,
-    mode: event.request.mode == "navigate" ? "cors" : event.request.mode,
-    credentials: event.request.credentials,
-    redirect: event.request.redirect
-  });
+  if (
+    staticCache.find(
+      url => event.request.url.split("?")[0] === self.location.origin + url
+    )
+  ) {
+    // Remove params and body
+    let request = new Request(event.request.url.split("?")[0], {
+      method: "GET",
+      headers: event.request.headers,
+      mode: event.request.mode == "navigate" ? "cors" : event.request.mode,
+      credentials: event.request.credentials,
+      redirect: event.request.redirect
+    });
 
-  if (staticCache.find(url => request.url.slice('?')[0] === self.location.origin + url)) {
     // Cache First and Network Fallback
     event.respondWith(
       caches.open(staticCacheName).then(cache => {
         return cache.match(request).then(res => {
-          return res;
+          if (res) {
+            return res;
+          } else {
+            return fetch(event.request);
+          }
         });
       })
     );
   } else {
     // Network Only for others
-    event.respondWith(fetch(request));
+    event.respondWith(fetch(event.request));
   }
 });
