@@ -1,3 +1,20 @@
+let db;
+const itemContainerEl = document.querySelector(".item-container");
+
+// Render item list on load
+window.addEventListener('load', () => {
+  db = new SaiDB();
+  db.init().then(() => {
+    db.getItems().then(items => {
+      items.forEach(item => {
+        const el = createItemEl(item);
+        itemContainerEl.append(el);
+      });
+    });
+  });
+});
+
+// Create Item Element given Item
 const createItemEl = item => {
   let el = document.createElement("a");
   el.href = `/detail?id=${item.id}`;
@@ -15,16 +32,3 @@ const createItemEl = item => {
 
   return el;
 };
-
-let itemContainerEl;
-
-window.addEventListener("load", () => {
-  itemContainerEl = document.querySelector(".item-container");
-
-  window.getItems().then(items => {
-    items.forEach(item => {
-      let el = createItemEl(item);
-      itemContainerEl.append(el);
-    });
-  });
-});

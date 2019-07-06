@@ -1,19 +1,41 @@
-let iconEl;
-let titleEl;
-let deleteEl;
-let focusTimeEl;
-let breakTimeEl;
-let startEl;
-let stopEl;
-let backEl;
-
-let itemId = location.search.slice(1).split('&').find(param => param.startsWith('id')).split('=')[1];
+let db;
+const iconEl = document.querySelector('.detail-icon');
+const titleEl = document.querySelector('.detail-title');
+const deleteEl = document.querySelector('.detail-delete');
+const focusTimeEl = document.querySelector('.detail-focus-time-left');
+const breakTimeEl = document.querySelector('.detail-break-time-left');
+const startEl = document.querySelector('.detail-start');
+const stopEl = document.querySelector('.detail-stop');
+const backEl = document.querySelector('.detail-back');
+const itemId = location.search.slice(1).split('&').find(param => param.startsWith('id')).split('=')[1];
 let originalFocusTime;
 let focusTimeLapse = 0;
 let originalBreakTime;
 let breakTimeLapse = 0;
-
 let intervalRef;
+
+// Render details page on load
+window.addEventListener('load', () => {
+  db = new SaiDB();
+  db.init().then(() => {
+    if(itemId) {
+      db.getItem(itemId).then(item => {
+        if(item) {
+          console.log('Loading Item:', item);
+          iconEl.innerText = item.icon;
+          titleEl.innerText = item.title;
+          originalFocusTime = item.focusTime;
+          originalBreakTime = item.breakTime;
+          renderTime();
+        } else {
+          // TODO: Display error and link back to home
+        }
+      });
+    } else {
+      // TODO: Display error and link back to home
+    }
+  });
+});
 
 const formatDigitToString = (num) => {
   if(num < 10) {
@@ -44,7 +66,7 @@ const renderTime = () => {
 
 window.deleteItem = () => {
   console.log('deleting item!');
-  window.removeItem(itemId);
+  db.removeItem(itemId);
   window.location.href = '/';
 };
 
@@ -69,33 +91,3 @@ window.stopItem = () => {
   breakTimeLapse = 0;
   renderTime();
 };
-
-window.addEventListener("load", () => {
-  iconEl = document.querySelector('.detail-icon');
-  titleEl = document.querySelector('.detail-title');
-  deleteEl = document.querySelector('.detail-delete');
-  focusTimeEl = document.querySelector('.detail-focus-time-left');
-  breakTimeEl = document.querySelector('.detail-break-time-left');
-  startEl = document.querySelector('.detail-start');
-  stopEl = document.querySelector('.detail-stop');
-  backEl = document.querySelector('.detail-back');
-
-  if(itemId) {
-    window.getItem(itemId).then(item => {
-      if(item) {
-        console.log('Loading Item:', item);
-        iconEl.innerText = item.icon;
-        titleEl.innerText = item.title;
-
-        originalFocusTime = item.focusTime;
-        originalBreakTime = item.breakTime;
-
-        renderTime();
-      } else {
-        // TODO: Display error and link back to home
-      }
-    });
-  } else {
-    // TODO: Display error and link back to home
-  }
-});

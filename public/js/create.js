@@ -1,21 +1,58 @@
+let db;
+let iconContainer = document.querySelector(".icon-container");
+let iconInput = document.querySelector("#create-icon");
+let titleInput = document.querySelector("#create-title");
+let focusInput = document.querySelector("#create-focus-time");
+let breakInput = document.querySelector("#create-break-time");
 const availableIcons = [
-  "alarm",
-  "assignment",
-  "build",
-  "commute",
-  "delete",
-  "grade",
-  "shopping_cart",
-  "create",
-  "mail",
-  "weekend",
-  "local_cafe",
-  "local_phone",
-  "local_florist",
-  "local_pizza",
-  "restaurant",
-  "wc"
-];
+    "alarm",
+    "assignment",
+    "build",
+    "commute",
+    "delete",
+    "grade",
+    "shopping_cart",
+    "create",
+    "mail",
+    "weekend",
+    "local_cafe",
+    "local_phone",
+    "local_florist",
+    "local_pizza",
+    "restaurant",
+    "wc"
+  ];
+
+// Render form options on load
+window.addEventListener('load', () => {
+  db = new SaiDB();
+  db.init();
+
+  // Render Icons
+  availableIcons.forEach(icon => {
+    const el = createIconEl(icon);
+    iconContainer.append(el);
+  });
+});
+
+const selectIcon = icon => {
+  iconInput.value = icon;
+};
+
+const createIconEl = icon => {
+    let el = document.createElement("div");
+    el.value = icon;
+    el.tabIndex = 0;
+    el.onclick = () => selectIcon(icon);
+
+    let iconEl = document.createElement("i");
+    iconEl.classList.add("material-icons");
+    iconEl.innerText = icon;
+
+    el.append(iconEl);
+
+    return el;
+}
 
 window.back = () => {
   console.log("Back!");
@@ -33,41 +70,7 @@ window.createItem = event => {
 
   console.log("Creating Item", item);
 
-  window.addItem(item).then(res => {
-      window.location.href = '/';
-  })
-};
-
-const selectIcon = icon => {
-  iconInput.value = icon;
-};
-
-let iconContainer;
-let iconInput;
-let titleInput;
-let focusInput;
-let breakInput;
-
-window.addEventListener("load", () => {
-  iconContainer = document.querySelector(".icon-container");
-  iconInput = document.querySelector("#create-icon");
-  titleInput = document.querySelector("#create-title");
-  focusInput = document.querySelector("#create-focus-time");
-  breakInput = document.querySelector("#create-break-time");
-
-  availableIcons.forEach(icon => {
-    let el = document.createElement("div");
-    el.value = icon;
-    el.tabIndex = 0;
-
-    el.onclick = () => selectIcon(icon);
-
-    let iconEl = document.createElement("i");
-    iconEl.classList.add("material-icons");
-    iconEl.innerText = icon;
-
-    el.append(iconEl);
-
-    iconContainer.append(el);
+  db.addItem(item).then(res => {
+    window.location.href = "/";
   });
-});
+};
