@@ -2,7 +2,7 @@ window.initSw = () => {
   // Register service worker
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-      .register("sw.js")
+      .register("/sw.js", {scope: '/'})
       .then(res => {
         console.log("Service worker register succeeded!");
       })
@@ -79,9 +79,9 @@ class SaiDB {
           console.log("Successfully opened indexedDb", event.target.result);
           this.db = event.target.result;
   
-          if (!this.db.objectStoreNames.contains(storeName)) {
+          if (!this.db.objectStoreNames.contains(this.storeName)) {
             console.log("Creating Items Store", db);
-            this.db.createObjectStore(storeName, { keyPath: "id" });
+            this.db.createObjectStore(this.storeName, { keyPath: "id" });
             resolve(this.db);
           }
         };
