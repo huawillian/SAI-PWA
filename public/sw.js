@@ -1,8 +1,6 @@
 const staticCacheName = 'static_v1';
 
 const staticCache = [
-    '/',
-    'index.html',
     '/images/icon-192.png',
     '/images/icon-512.png'
 ];

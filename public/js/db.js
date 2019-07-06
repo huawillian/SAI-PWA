@@ -1,5 +1,5 @@
-let dbPromise;
-let db;
+var dbPromise;
+var db;
 
 if ("indexedDB" in window) {
   dbPromise = window.indexedDB.open("sai-db", 1);
