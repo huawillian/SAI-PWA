@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/huawillian/SAI-PWA#readme",
   "devDependencies": {
-    "http-server": "^0.11.1",
+    "http-server": "^0.11.2",
     "ngrok": "^3.2.1"
   }
 }
